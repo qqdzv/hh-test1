@@ -12,3 +12,6 @@ TGBOT_TOKEN_ADMIN = os.environ.get('TGBOT_TOKEN_ADMIN')
 TG_ID_ADMIN = os.environ.get('TG_ID_ADMIN')
 SECRET_JWT = os.environ.get('SECRET_JWT')
 NOTIFICATIONS_TGBOT_TOKEN = os.environ.get('NOTIFICATIONS_TGBOT_TOKEN')
+
+REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_PORT = os.environ.get('REDIS_PORT')
