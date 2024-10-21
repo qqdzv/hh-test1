@@ -10,5 +10,5 @@ class Message(Base):
     receiver_id = Column(Integer, ForeignKey("user.id"))
     content = Column(String, nullable=False)
     is_read = Column(Boolean, default=False)
-    created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
+    created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc).replace(tzinfo=None))
     
