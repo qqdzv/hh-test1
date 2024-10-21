@@ -15,13 +15,13 @@ from src.auth.models import User
 from pydantic import BaseModel
 from sqlalchemy import select
 from fastapi.middleware.cors import CORSMiddleware
-
+from src.config import REDIS_HOST,REDIS_PORT
 templates = Jinja2Templates(directory="src/templates")
 
 class UserSearchRequest(BaseModel):
     username: str
 
-redis_fastapi = aioredis.from_url("redis://redis:6379")
+redis_fastapi = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
