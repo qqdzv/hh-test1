@@ -11,7 +11,7 @@ from src.config import SECRET_JWT
 from src.auth.models import User
 from src.logger import logger
 import json
-
+from src.config import REDIS_HOST,REDIS_PORT
 from fastapi import (
     Depends, 
     APIRouter, 
@@ -19,7 +19,7 @@ from fastapi import (
     WebSocketDisconnect
 )
 
-redis = aioredis.from_url("redis://redis:6379")
+redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}")
 
 router = APIRouter()
 
