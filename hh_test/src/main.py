@@ -14,13 +14,14 @@ from redis import asyncio as aioredis
 from src.auth.models import User
 from pydantic import BaseModel
 from sqlalchemy import select
+from fastapi.middleware.cors import CORSMiddleware
 
 templates = Jinja2Templates(directory="src/templates")
 
 class UserSearchRequest(BaseModel):
     username: str
 
-redis_fastapi = aioredis.from_url("redis://localhost")
+redis_fastapi = aioredis.from_url("redis://redis:6379")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -32,8 +33,6 @@ app = FastAPI(
     title="Test",
     lifespan=lifespan
 )
-
-# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 app.include_router(
@@ -68,7 +67,7 @@ async def search_user(
     data: UserSearchRequest, 
     session: AsyncSession = Depends(get_async_session),
     user = Depends(current_user)):
-    
+
     if user.username == data.username:
         return {"exists": False}
     query = select(User).where(User.username == data.username)
@@ -82,3 +81,18 @@ async def search_user(
 async def chat(request: Request, recipient: str, token: str):
     return templates.TemplateResponse("chat.html", {"request": request, "recipient": recipient, "token": token})
 
+
+
+origins = [
+    "http://127.0.0.1:8000",
+    "http://0.0.0.0:8000",
+    "http://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
+    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Authorization"],
+)

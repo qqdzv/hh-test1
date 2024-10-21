@@ -27,7 +27,6 @@ click-repl==0.3.0
 crypto==1.4.1
 cryptography==43.0.3
 dnspython==2.7.0
-dotenv==0.0.5
 email_validator==2.1.2
 fastapi==0.115.2
 fastapi-cache==0.1.0
@@ -39,6 +38,7 @@ h11==0.14.0
 hiredis==3.0.0
 httptools==0.6.4
 idna==3.10
+Jinja2==3.1.4
 jose==1.0.0
 kombu==5.4.2
 loguru==0.7.2
@@ -50,7 +50,6 @@ multidict==6.1.0
 Naked==0.1.32
 prompt_toolkit==3.0.48
 propcache==0.2.0
-psycopg2==2.9.10
 psycopg2-binary==2.9.10
 pwdlib==0.2.0
 pycparser==2.22

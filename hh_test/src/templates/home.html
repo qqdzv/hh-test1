@@ -37,10 +37,12 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({ username })
             });
 
             if (response.ok) {
+                console.log('cooke',response.cookies)
                 const data = await response.json();
                 if (data.exists) {
                     document.getElementById('result').textContent = "Пользователь найден!";
@@ -77,6 +79,7 @@
 
     // Функция для подключения к чату (теперь делает перенаправление)
     function connectToChat() {
+        console.log('test',document.cookie)
         const token = getCookie('bonds'); // Предполагаем, что токен хранится в куки
         if (!token) {
             alert('Токен не найден! Пожалуйста, авторизуйтесь.');
@@ -89,7 +92,7 @@
         }
 
         // Перенаправляем на страницу чата с параметрами
-        window.location.href = `http://127.0.0.1:8000/chat?recipient=${encodeURIComponent(recipient)}&token=${encodeURIComponent(token)}`;
+        window.location.href = `/chat?recipient=${encodeURIComponent(recipient)}&token=${encodeURIComponent(token)}`;
     }
 </script>
 

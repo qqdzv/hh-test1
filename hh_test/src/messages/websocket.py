@@ -19,7 +19,7 @@ from fastapi import (
     WebSocketDisconnect
 )
 
-redis = aioredis.from_url("redis://localhost")
+redis = aioredis.from_url("redis://redis:6379")
 
 router = APIRouter()
 

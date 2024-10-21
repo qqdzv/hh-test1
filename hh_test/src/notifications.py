@@ -25,8 +25,10 @@ async def get_user_id_by_username(username : str, session: AsyncSession = Depend
 # отправка уведомления через тг
 async def send_notification(username: str, sender : str, message: str, session: AsyncSession):
     user_id = await get_user_id_by_username(username,session=session) 
-    if user_id:
-        await bot.send_message(user_id, f"From {sender} : {message}")
-    else:
-        logger.info(f"User with username {username} not found.")
-
+    try:
+        if user_id:
+            await bot.send_message(user_id, f"From {sender} : {message}")
+        else:
+            logger.info(f"User with username {username} not found.")
+    except Exception as err:
+        logger.error(f"User {sender} {err}")

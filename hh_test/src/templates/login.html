@@ -96,13 +96,15 @@
         formData.append('client_secret', 'string');  // Убедитесь, что это обязательное поле
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth/login', {
+            const response = await fetch('/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'  // Меняем на правильный тип контента
+                    'Content-Type': 'application/x-www-form-urlencoded'  // Правильный тип контента для form-urlencoded
                 },
-                body: formData.toString()
+                credentials: 'include',  // Для передачи куки
+                body: new URLSearchParams(formData).toString()  // Формируем строку для x-www-form-urlencoded
             });
+            
 
             if (response.ok) {
                 window.location.href = '/home';  // Редирект на /home
