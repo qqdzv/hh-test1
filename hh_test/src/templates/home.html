@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск пользователя</title>
+    <style>
+        /* Ваши стили */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Поиск пользователя</h2>
+    <input id="username" type="text" placeholder="Имя пользователя">
+    <button onclick="searchUser()">Искать</button>
+    <div id="result"></div>
+    <button id="chatButton" onclick="connectToChat()">Открыть чат</button>
+</div>
+
+<script>
+    var recipient = "";
+
+    // Функция для поиска пользователя
+    async function searchUser() {
+        const username = document.getElementById('username').value;
+
+        if (!username) {
+            document.getElementById('result').textContent = "Введите имя пользователя.";
+            document.getElementById('result').style.color = 'red';
+            return;
+        }
+
+        try {
+            const response = await fetch('/search_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.exists) {
+                    document.getElementById('result').textContent = "Пользователь найден!";
+                    document.getElementById('result').style.color = 'green';
+                    document.getElementById('chatButton').style.display = 'block'; // Показываем кнопку "Открыть чат"
+                    recipient = username; // Сохраняем имя пользователя для подключения к WebSocket
+                } else {
+                    document.getElementById('result').textContent = "Пользователь не найден.";
+                    document.getElementById('result').style.color = 'red';
+                    document.getElementById('chatButton').style.display = 'none'; // Скрываем кнопку "Открыть чат"
+                }
+            } else {
+                document.getElementById('result').textContent = "Ошибка запроса. Попробуйте снова.";
+                document.getElementById('chatButton').style.display = 'none';
+            }
+        } catch (error) {
+            document.getElementById('result').textContent = "Произошла ошибка. Попробуйте снова.";
+            document.getElementById('chatButton').style.display = 'none';
+            console.error('Ошибка при поиске пользователя:', error);
+        }
+    }
+
+    // Функция для получения значения куки по имени
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].trim().split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    // Функция для подключения к чату (теперь делает перенаправление)
+    function connectToChat() {
+        const token = getCookie('bonds'); // Предполагаем, что токен хранится в куки
+        if (!token) {
+            alert('Токен не найден! Пожалуйста, авторизуйтесь.');
+            return;
+        }
+
+        if (!recipient) {
+            alert('Пользователь не найден.');
+            return;
+        }
+
+        // Перенаправляем на страницу чата с параметрами
+        window.location.href = `http://127.0.0.1:8000/chat?recipient=${encodeURIComponent(recipient)}&token=${encodeURIComponent(token)}`;
+    }
+</script>
+
+</body>
+</html>

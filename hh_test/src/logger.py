@@ -5,6 +5,7 @@ import asyncio
 import sys
 
 
+# Админские логи в тг телеграм и запись их в файл hh-test.log
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TGBOT_TOKEN_ADMIN}/sendMessage"
 
 async def send_log_to_telegram(message):

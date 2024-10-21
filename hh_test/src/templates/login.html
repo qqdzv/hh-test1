@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .toggle {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .toggle a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .toggle a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Вход</h2>
+    <form id="loginForm" action="auth/login" method="POST" onsubmit="return handleLogin(event)">
+        <input id="username" type="text" name="username" placeholder="Имя пользователя" required>
+        <input id="password" type="password" name="password" placeholder="Пароль" required>
+        <button type="submit">Войти</button>
+    </form>
+    <div class="toggle">
+        <span>Нет аккаунта? <a href="register">Зарегистрироваться</a></span>
+    </div>
+</div>
+
+<script>
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('grant_type', 'password');  // Если это нужно
+        formData.append('scope', '');
+        formData.append('client_id', 'string');  // Убедитесь, что это обязательное поле
+        formData.append('client_secret', 'string');  // Убедитесь, что это обязательное поле
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'  // Меняем на правильный тип контента
+                },
+                body: formData.toString()
+            });
+
+            if (response.ok) {
+                window.location.href = '/home';  // Редирект на /home
+            } else {
+                const errorData = await response.json();  // Чтение ошибки сервера
+                alert('Ошибка входа: ' + errorData.detail);  // Показываем ошибку пользователю
+            }
+        } catch (error) {
+            console.error('Ошибка при входе:', error);
+            alert('Произошла ошибка. Попробуйте снова.');
+        }
+    }
+</script>
+
+</body>
+</html>
