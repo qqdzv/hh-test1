@@ -1,9 +1,5 @@
-import datetime
-import uuid
 
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar
-
-from pydantic import BaseModel, ConfigDict, EmailStr
+from typing import Optional
 
 from fastapi_users import schemas
 

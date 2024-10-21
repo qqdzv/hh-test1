@@ -1,15 +1,13 @@
-from typing import Optional
 
-from fastapi import Depends, Request
-from fastapi_users.exceptions import UserAlreadyExists
 from fastapi_users import BaseUserManager, IntegerIDMixin
-
-from src.logger import logger
-from src.auth.models import User
-from src.auth.utils import get_user_db
+from fastapi_users.exceptions import UserAlreadyExists
 from fastapi_users import schemas,models
+from src.auth.utils import get_user_db
+from fastapi import Depends, Request
 from src.config import SECRET_JWT
-
+from src.auth.models import User
+from src.logger import logger
+from typing import Optional
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET_JWT

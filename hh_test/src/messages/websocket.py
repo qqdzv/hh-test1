@@ -1,25 +1,25 @@
-from typing import Annotated
+from src.notifications import send_notification
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.responses import HTMLResponse
+from src.messages.schemas import MessageAdd
+from src.database import get_async_session
+from fastapi_users.jwt import decode_jwt
+from src.messages.models import Message
+from redis import asyncio as aioredis
+from sqlalchemy import select,insert
+from src.config import SECRET_JWT
+from src.auth.models import User
+import json
+
 from fastapi import (
-    Cookie, 
     Depends, 
     APIRouter, 
     WebSocket, 
-    WebSocketDisconnect, 
-    status
+    WebSocketDisconnect
 )
-from src.auth.models import User
-from sqlalchemy import select,insert
-from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.exceptions import WebSocketException
-from fastapi.responses import HTMLResponse
-from src.config import SECRET_JWT
-from fastapi_users.jwt import SecretType, decode_jwt, generate_jwt
-from src.database import get_async_session
-from src.messages.schemas import MessageAdd
-from src.messages.models import Message
-from src.notifications import send_notification
-import json
-from redis import asyncio as aioredis
+
+
+
 
 
 redis = aioredis.from_url("redis://localhost")

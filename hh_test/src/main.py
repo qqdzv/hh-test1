@@ -1,15 +1,12 @@
-from fastapi import FastAPI, Depends
-import fastapi_users
-from contextlib import asynccontextmanager
-from src.auth.base_config import auth_backend, fastapi_users,current_user
-from src.auth.schemas import UserRead, UserCreate
-from src.auth.models import User
-from src.messages.websocket import router as router_ws
+from src.auth.base_config import auth_backend, fastapi_users
 from fastapi_cache.backends.redis import RedisCacheBackend
-from fastapi_cache import CacheRegistry
+from src.messages.websocket import router as router_ws
+from src.auth.schemas import UserRead, UserCreate
+from contextlib import asynccontextmanager
 from redis import asyncio as aioredis
-import aiofiles
-import asyncio
+from fastapi import FastAPI
+
+
 
 
 redis_fastapi = aioredis.from_url("redis://localhost")
@@ -42,9 +39,6 @@ app.include_router(
 
                           
 app.include_router(router_ws)
-# app.include_router(router_pages)
-# app.include_router(router_coin)
-
 
 
 # origins = [

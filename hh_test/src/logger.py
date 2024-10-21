@@ -1,8 +1,9 @@
-import sys
+from src.config import TG_ID_ADMIN, TGBOT_TOKEN_ADMIN
+from loguru import logger
 import aiohttp
 import asyncio
-from loguru import logger
-from src.config import TG_ID_ADMIN, TGBOT_TOKEN_ADMIN
+import sys
+
 
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TGBOT_TOKEN_ADMIN}/sendMessage"
 
